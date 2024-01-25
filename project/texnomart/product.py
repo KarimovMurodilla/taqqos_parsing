@@ -150,7 +150,7 @@ def prog(links, index, step):
                     'website': 'Texnomart',
                     'website_link': str(item_url)
                 }
-                r = requests.post('http://127.0.0.1:8000/v1/product/price/create/', data=obj)
+                r = requests.post('https://api.taqqoz.uz/1/product/price/create/', data=obj)
 
 
 def thr_prog(links, thr_ind=1):
