@@ -31,7 +31,7 @@ services:
       - DATABASE_USER=taqqos_parsing
       - DATABASE_PASSWORD=taqqos_parsing
       - DATABASE_HOST=parsing-db
-      - DATABASE_PORT=5433
+      - DATABASE_PORT=5432
     depends_on:
       - redis
 
@@ -47,7 +47,7 @@ services:
       - DATABASE_USER=taqqos_parsing
       - DATABASE_PASSWORD=taqqos_parsing
       - DATABASE_HOST=parsing-db
-      - DATABASE_PORT=5433
+      - DATABASE_PORT=5432
     depends_on:
       - web
       - redis
@@ -67,7 +67,7 @@ services:
       - DATABASE_USER=taqqos_parsing
       - DATABASE_PASSWORD=taqqos_parsing
       - DATABASE_HOST=parsing-db
-      - DATABASE_PORT=5433
+      - DATABASE_PORT=5432
     depends_on:
       - web
       - redis
