@@ -133,9 +133,7 @@ def prog(links, index, step):
                     phone_number = ""
                     delivery_info = ""
 
-                id = browser.current_url.split('/')[-2]
-
-                print(img)
+                # id = browser.current_url.split('/')[-2]
 
                 obj = {
                     'name': str(product_name),
@@ -152,7 +150,7 @@ def prog(links, index, step):
                     'website': 'Texnomart',
                     'website_link': str(item_url)
                 }
-                r = requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)
+                requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)
 
 
 def thr_prog(links, thr_ind=1):
