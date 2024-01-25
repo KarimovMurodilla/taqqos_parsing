@@ -16,7 +16,7 @@ LINK = 'https://texnomart.uz'
 
 @database_connect
 def create_category(db: Session, data: CategorySchema) -> None:
-    category = db.query(Category).filter(Category.name == data.name).first()
+    category = db.query(Category).filter(Category.name == data.get("name")).first()
     if category is None:
         category = Category(**data.dict())
         db.add(category)
@@ -63,4 +63,5 @@ def prog():
                         "name": cat_name,
                         "url": cat_url,
                     }
+                    data = CategorySchema(data)
                     create_category(data=data)
