@@ -63,5 +63,5 @@ def prog():
                         "name": cat_name,
                         "url": cat_url,
                     }
-                    data = CategorySchema(data)
+                    data = CategorySchema(**data)
                     create_category(data=data)
