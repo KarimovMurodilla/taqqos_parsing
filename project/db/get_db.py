@@ -11,10 +11,10 @@ def get_db():
 
 def database_connect(func):
     def connect(*args, **kwargs):
-        session = SessionLocal()
+        db = SessionLocal()
         try:
-            return func(session=session, *args, **kwargs)
+            return func(db=db, *args, **kwargs)
         finally:
-            session.close()
+            db.close()
 
     return connect
