@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    restart: always
+    container_name: postgres-db
+    image: postgres:16.1
+    hostname: postgres-db
+    ports:
+      - 127.0.0.1:5433:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      #- PGDATA
+      - POSTGRES_PASSWORD=taqqos_parsing
+      - POSTGRES_USER=taqqos_parsing
+      - POSTGRES_DB=taqqos_parsing
+      #- POSTGRES_TZ
+
+  web:
+    build: ./project
+    ports:
+      - 8004:8000
+    command: uvicorn main:app --host 0.0.0.0 --reload
+    volumes:
+      - ./project:/usr/src/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+
+  worker:
+    build: ./project
+    command: celery -A celery_config.app worker -B --loglevel=info
+    volumes:
+      - ./project:/usr/src/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - web
+      - redis
+
+  redis:
+    image: redis:7
+
+  dashboard:
+    build: ./project
+    command: celery --broker=redis://redis:6379/0 flower --port=5555
+    ports:
+      - 5556:5555
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - web
+      - redis
+      - worker
+
+volumes:
+  postgres_data:
