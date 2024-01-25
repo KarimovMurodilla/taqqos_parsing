@@ -134,6 +134,7 @@ def prog(links, index, step):
                     delivery_info = ""
 
                 # id = browser.current_url.split('/')[-2]
+                print(product_name)
 
                 obj = {
                     'name': str(product_name),

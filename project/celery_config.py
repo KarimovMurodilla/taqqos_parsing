@@ -19,7 +19,7 @@ app.conf.beat_schedule = {
     # Executes every Monday morning at 7:00 a.m.
     'parse-texnomart-product': {
         'task': 'tasks.parse_technomart_product',
-        'schedule': crontab(minute=17, hour=11),
+        'schedule': crontab(minute=30, hour=11),
     },
     'parse-texnomart-category': {
         'task': 'tasks.parse_technomart_category',
