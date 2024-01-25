@@ -25,6 +25,7 @@ def create_category(db: Session, data: CategorySchema) -> None:
     db.commit()
 
 
+@database_connect
 def get_all_categories(db: Session):
     categories = db.query(Category)
     return categories
