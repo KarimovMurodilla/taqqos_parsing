@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
@@ -6,17 +7,17 @@ import json
 import time
 import threading
 import requests
+from webdriver_manager.chrome import ChromeDriverManager
 
 LINK = 'https://texnomart.uz'
 
 
 def browser_init():
     chrome_options = Options()
-    chrome_options.set_capability("pageLoadStrategy", "none")
+    chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-gpu')
-    browser = webdriver.Chrome(options=chrome_options)
-
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     return browser
 
 
