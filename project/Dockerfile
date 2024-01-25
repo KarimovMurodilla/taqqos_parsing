@@ -1,5 +1,5 @@
 # pull official base image
-FROM --platform=linux/amd64 python:3.10
+FROM python:3.10
 
 RUN apt-get update && \
     apt-get -qq -y install  libxpm4 libxrender1 libgtk2.0-0 libnss3\
@@ -17,14 +17,6 @@ RUN apt-get update && apt-get install -y wget unzip gcc && \
     apt install -y ./google-chrome-stable_current_amd64.deb && \
     rm google-chrome-stable_current_amd64.deb && \
     apt-get clean
-
-
-# install chromedriver
-RUN apt-get install -yqq unzip
-RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
-RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
-
-
 
 # set work directory
 WORKDIR /usr/src/app
