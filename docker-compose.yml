@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  postgres-db:
+  parsing-db:
     restart: always
-    container_name: postgres-db
+    container_name: parsing-db
     image: postgres:16.1
-    hostname: postgres-db
+    hostname: parsing-db
     ports:
       - 127.0.0.1:5433:5432
     volumes:
@@ -27,6 +27,11 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - DATABASE_NAME=taqqos_parsing
+      - DATABASE_USER=taqqos_parsing
+      - DATABASE_PASSWORD=taqqos_parsing
+      - DATABASE_HOST=parsing-db
+      - DATABASE_PORT=5433
     depends_on:
       - redis
 
@@ -38,6 +43,11 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - DATABASE_NAME=taqqos_parsing
+      - DATABASE_USER=taqqos_parsing
+      - DATABASE_PASSWORD=taqqos_parsing
+      - DATABASE_HOST=parsing-db
+      - DATABASE_PORT=5433
     depends_on:
       - web
       - redis
@@ -53,6 +63,11 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - DATABASE_NAME=taqqos_parsing
+      - DATABASE_USER=taqqos_parsing
+      - DATABASE_PASSWORD=taqqos_parsing
+      - DATABASE_HOST=parsing-db
+      - DATABASE_PORT=5433
     depends_on:
       - web
       - redis
