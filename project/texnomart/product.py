@@ -135,6 +135,8 @@ def prog(links, index, step):
 
                 id = browser.current_url.split('/')[-2]
 
+                print(img)
+
                 obj = {
                     'name': str(product_name),
                     'photo': str(img),
