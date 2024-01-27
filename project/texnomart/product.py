@@ -56,7 +56,8 @@ def prog(links, index, step):
 
             items = ab()
 
-            print(f'page_count - {ind}')
+            print(f'page_count - {page_count}')
+            print(f'page - {ind}')
             for item in items:
                 item_title = item.find(class_='product-top')
                 item_url_half = item_title.find('a').get('href')
@@ -145,6 +146,7 @@ def prog(links, index, step):
                     'website': 'Texnomart',
                     'website_link': str(item_url)
                 }
+                print(product_name)
                 requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)
 
 
