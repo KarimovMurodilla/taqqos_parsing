@@ -27,7 +27,7 @@ def prog(links, index, step):
         link = link_data[0]
         browser = browser_init()
         browser.get(link)
-        time.sleep(1)
+        time.sleep(10)
 
         def ab():
 
@@ -47,7 +47,8 @@ def prog(links, index, step):
         try:
             page_count = int(
                 browser.find_element(By.CLASS_NAME, 'pagination').find_elements(By.TAG_NAME, 'span')[-2].text)
-        except Exception:
+        except Exception as e:
+            print(e)
             page_count = 1
 
         for ind in range(1, page_count + 1):
