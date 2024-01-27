@@ -1,7 +1,9 @@
 from celery import shared_task
 
-from texnomart.category import get_all_categories, prog
+from services import get_all_categories
+from texnomart.category import prog
 from texnomart.product import thr_prog
+from mediapark.category import prog as mediapark_category
 
 
 @shared_task()
@@ -13,3 +15,8 @@ def parse_technomart_product():
 @shared_task()
 def parse_technomart_category():
     prog()
+
+
+@shared_task()
+def parse_mediapark_category():
+    mediapark_category()

@@ -17,13 +17,17 @@ app.conf.timezone = "UTC"
 
 app.conf.beat_schedule = {
     # Executes every Monday morning at 7:00 a.m.
-    'parse-texnomart-product': {
-        'task': 'tasks.parse_technomart_product',
-        'schedule': crontab(minute=35, hour=11),
-    },
+    # 'parse-texnomart-product': {
+    #     'task': 'tasks.parse_technomart_product',
+    #     'schedule': crontab(minute=35, hour=11),
+    # },
     'parse-texnomart-category': {
         'task': 'tasks.parse_technomart_category',
-        'schedule': crontab(hour=7, minute=0, day_of_week=1),
+        'schedule': crontab(),
+    },
+    'parse-mediapark-category': {
+        'task': 'tasks.parse_mediapark_category',
+        'schedule': crontab(),
     },
 }
 

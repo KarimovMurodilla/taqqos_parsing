@@ -21,26 +21,10 @@ def browser_init():
     return browser
 
 
-def get_json_data():
-    with open('result.json', 'r', encoding='utf-8') as file:
-        data = json.load(file)
-    return data
-
-
-def set_json_data(data):
-    with open('result.json', 'w', encoding='utf-8') as file:
-        json.dump(data, file, ensure_ascii=False)
-
-
-main_result = {}
-
-
 def prog(links, index, step):
-    global main_result
     for i in range(index, len(links), step):
         link_data = links[i]
         link = link_data[0]
-        link_name = link_data[1]
         browser = browser_init()
         browser.get(link)
         time.sleep(1)
@@ -60,8 +44,6 @@ def prog(links, index, step):
                     time.sleep(1)
             return items
 
-        items = ab()
-
         try:
             page_count = int(
                 browser.find_element(By.CLASS_NAME, 'pagination').find_elements(By.TAG_NAME, 'span')[-2].text)
@@ -74,7 +56,7 @@ def prog(links, index, step):
 
             items = ab()
 
-            print(f'page_count - {page_count}')
+            print(f'page_count - {ind}')
             for item in items:
                 item_title = item.find(class_='product-top')
                 item_url_half = item_title.find('a').get('href')
@@ -92,10 +74,11 @@ def prog(links, index, step):
                     continue
 
                 try:
-                    img = browser.find_element(By.CLASS_NAME, 'gallery-top__item').find_element(By.TAG_NAME,
-                                                                                                'img').get_attribute(
-                        "src")
-                except Exception as e:
+                    img = browser.find_element(
+                        By.CLASS_NAME, 'gallery-top__item').find_element(
+                        By.TAG_NAME,'img'
+                    ).get_attribute("src")
+                except Exception:
                     img = ''
 
                 # desc_html = soup.find(class_='product__price').find(class_='inner_props')
@@ -111,21 +94,33 @@ def prog(links, index, step):
                     description = ""
 
                 try:
-                    feature = soup.find(id="product-char-wrap")
+                    features = soup.find(
+                        class_="product__characteristic"
+                    ).find('ul', class_='characteristic__wrap').find_all('li', class_='characteristic__item')
                 except Exception:
-                    feature = ""
+                    features = ""
+                features_list = {}
+                if features:
+                    for feature in features:
+                        try:
+                            features_list[
+                                feature.find(
+                                    'h2', class_='characteristic__name'
+                                ).text
+                            ] = feature.find('span', class_='characteristic__value').text
+                        except Exception:
+                            continue
 
                 try:
                     credit = soup.find(class_="product-installment-block")
                     has_credit = True
                     credit_monthly_amount = ''.join(filter(str.isdigit, credit.find(class_="installment__price").text))
-
-                except Exception as e:
+                except Exception:
                     has_credit = False
                     credit_monthly_amount = ""
 
                 try:
-                    address = soup.find(class_="presence__address").text
+                    address = ', '.join([e.text for e in soup.find_all(class_="presence__address")])
                     delivery_info = soup.find(class_="type-info__text").find('span').text
                     phone_number = soup.find(class_="presence__phone").text
                 except Exception:
@@ -134,14 +129,13 @@ def prog(links, index, step):
                     delivery_info = ""
 
                 # id = browser.current_url.split('/')[-2]
-                print(product_name)
 
                 obj = {
                     'name': str(product_name),
                     'photo': str(img),
                     'price_amount': str(price),
                     'description': str(description),
-                    'feature': str(feature),
+                    'features': json.dumps(features_list),
                     'has_credit': has_credit,
                     'credit_monthly_amount': credit_monthly_amount,
                     'has_delivery': True,
@@ -155,7 +149,6 @@ def prog(links, index, step):
 
 
 def thr_prog(links, thr_ind=1):
-    global main_result
     threads = []
 
     # Створюємо 5 потоків

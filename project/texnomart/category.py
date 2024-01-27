@@ -4,31 +4,13 @@ from bs4 import BeautifulSoup
 import time
 
 from selenium.webdriver.chrome.service import Service
-from sqlalchemy.orm import Session
 from webdriver_manager.chrome import ChromeDriverManager
 
-from db.get_db import database_connect
-from models.texnomart import Category
+from models.category import Websites
 from schemas import CategorySchema
+from services import create_category
 
 LINK = 'https://texnomart.uz'
-
-
-@database_connect
-def create_category(db: Session, data: CategorySchema) -> None:
-    category = db.query(Category).filter(Category.name == data.name).first()
-    if category is None:
-        category = Category(**data.dict())
-        db.add(category)
-    else:
-        category.name = data.name
-    db.commit()
-
-
-@database_connect
-def get_all_categories(db: Session):
-    categories = db.query(Category)
-    return categories
 
 
 def browser_init():
@@ -51,7 +33,7 @@ def prog():
             soup = BeautifulSoup(html, 'html.parser')
             category_list = soup.find(class_='catalog-dropdown').find(class_='catalog-right').find_all('aside')
             break
-        except:
+        except Exception:
             time.sleep(0.5)
     for cat_item in category_list:
         for sub_cat in cat_item.find_all('ul'):
@@ -63,6 +45,7 @@ def prog():
                     data = {
                         "name": cat_name,
                         "url": cat_url,
+                        "website": "texnomart"
                     }
                     data = CategorySchema(**data)
                     create_category(data=data)
