@@ -52,8 +52,8 @@ services:
 #      - web
 #      - redis
 
-#  redis:
-#    image: redis:7
+  redis:
+    image: redis:7
 #
 #  dashboard:
 #    build: ./project
