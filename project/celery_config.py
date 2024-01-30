@@ -19,26 +19,26 @@ app.conf.beat_schedule = {
     # Executes every Monday morning at 7:00 a.m.
     'parse-texnomart-product': {
         'task': 'tasks.parse_texnomart_product',
-        'schedule': crontab(minute="32", hour="1"),
+        'schedule': crontab(minute="*/5"),
     },
     'parse-texnomart-category': {
         'task': 'tasks.parse_texnomart_category',
-        'schedule': crontab(),
+        'schedule': crontab(hour=0, minute=0),
     },
 
     'parse-elmakon-category': {
         'task': 'tasks.parse_elmakon_category',
-        'schedule': crontab(),
+        'schedule': crontab(hour=0, minute=0),
     },
     'parse-elmakon-product': {
         'task': 'tasks.parse_elmakon_product',
-        'schedule': crontab(minute="32", hour="1"),
+        'schedule': crontab(minute="*/5"),
     },
 
-    'parse-mediapark-product': {
-        'task': 'tasks.parse_mediapark_product',
-        'schedule': crontab(minute="*/3"),
-    },
+    # 'parse-mediapark-product': {
+    #     'task': 'tasks.parse_mediapark_product',
+    #     'schedule': crontab(minute="*/3"),
+    # },
     # 'parse-mediapark-category': {
     #     'task': 'tasks.parse_mediapark_category',
     #     'schedule': crontab(),
