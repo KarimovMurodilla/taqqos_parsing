@@ -6,7 +6,7 @@ from schemas import CategorySchema
 
 @database_connect
 def create_category(db: Session, data: CategorySchema) -> None:
-    category = db.query(Category).filter(Category.name == data.name).first()
+    category = db.query(Category).filter((Category.name == data.name) & (Category.url == data.url)).first()
     if category is None:
         category = Category(**data.dict())
         db.add(category)
@@ -16,6 +16,6 @@ def create_category(db: Session, data: CategorySchema) -> None:
 
 
 @database_connect
-def get_all_categories(db: Session):
-    categories = db.query(Category)
+def get_all_categories(db: Session, website: str):
+    categories = db.query(Category).filter(Category.website == website)
     return categories

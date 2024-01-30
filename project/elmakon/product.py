@@ -1,5 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
@@ -9,7 +11,7 @@ import time
 import threading
 import requests
 
-LINK = 'https://mediapark.uz'
+LINK = 'https://elmakon.uz'
 
 
 def browser_init():
@@ -19,6 +21,7 @@ def browser_init():
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--window-size=1920,1080')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+
     return browser
 
 
@@ -28,7 +31,7 @@ def prog(links, index, step):
         link = link_data[0]
         browser = browser_init()
         browser.get(link)
-        time.sleep(20)
+        time.sleep(5)
 
         def ab():
 
@@ -38,8 +41,7 @@ def prog(links, index, step):
                 html = browser.page_source
                 soup = BeautifulSoup(html, 'html.parser')
                 try:
-                    items = soup.find(class_='grid gap-[16px] mt-[16px] pb-[10px] grid-cols-1').find_all('a',
-                                                                                                         class_='product-cart')
+                    items = soup.find(id='categories_view_pagination_contents').find_all(class_='ty-column4')
                     is_page_loading = False
                     break
                 except Exception:
@@ -47,54 +49,53 @@ def prog(links, index, step):
             return items
 
         try:
-            page_count = int(
-                browser.find_element(By.CLASS_NAME, 'pagination').find_elements(By.TAG_NAME, 'li')[-2].text)
+            page_count = int(browser.find_element(By.ID, 'ut2_pagination_block_bottom').find_element(By.CLASS_NAME,
+                                                                                                     'ty-pagination__items').find_elements(
+                By.CLASS_NAME, 'ty-pagination__item')[-1].text)
         except Exception as e:
             print(e)
             page_count = 1
 
-        for ind in range(1, page_count):
-            tot_url = link + f'?page={ind}'
+        for ind in range(1, page_count + 1):
+            tot_url = link + f'page-{ind}/'
             browser.get(tot_url)
-            time.sleep(20)
+
             items = ab()
 
             print(f'page_count - {page_count}, page - {ind}')
             for item in items:
-                item_url_half = item.get('href')
-                item_url = LINK + item_url_half
+                item_title = item.find(class_='ut2-gl__body').find(class_='ut2-gl__content').find(class_='ut2-gl__name')
+                item_url = item_title.find('a').get('href')
                 browser.get(item_url)
 
-                time.sleep(20)
+                time.sleep(5)
 
                 html = browser.page_source
                 soup = BeautifulSoup(html, 'html.parser')
 
                 try:
-                    product_name = soup.find('h1', class_='text-[24px] text-dark font-[600]').text
+                    product_name = soup.find('h1', class_='ut2-pb__title').find('bdi').text
                 except Exception:
                     continue
 
                 try:
-                    img = soup.find(class_='rounded-[24px] overflow-hidden w-full relative').find('img').get("src")
-                    img = LINK + str(img)
+                    img = browser.find_element(By.CLASS_NAME, 'ty-product-img').find_element(By.TAG_NAME,
+                                                                                             'img').get_attribute("src")
                 except Exception:
                     img = ''
 
                 try:
-                    price = ''.join(
-                        filter(str.isdigit, soup.find('h2', class_='text-[22px] font-[700] text-dark').text))
+                    price = ''.join(filter(str.isdigit, soup.find(class_='ty-price').find(class_="ty-price-num").text))
                 except Exception:
                     price = '0'
 
                 try:
-                    description = soup.find(class_="rich ql-editor").text
+                    description = soup.find(id="content_description").text
                 except Exception:
                     description = ""
 
                 try:
-                    features = soup.find(class_="mt-[12px] flex flex-col laptop:gap-[12px]").find_all(
-                        class_='grid grid-cols-2 items-center gap-[10px]')
+                    features = soup.find(class_="ty-features-list").find_all(class_='ty-control-group')
                 except Exception:
                     features = ""
                 features_list = {}
@@ -103,32 +104,37 @@ def prog(links, index, step):
                         try:
                             features_list[
                                 feature.find(
-                                    'span',
-                                    class_='tablet:text-[14px] text-gray font-[400] mobileS:text-[12px] flex gap-[8px]'
+                                    'span', class_='ty-product-feature__label'
                                 ).text
-                            ] = feature.find(
-                                class_='tablet:text-[14px] text-dark font-[400] mobileS:text-[12px] truncate').text
+                            ] = feature.find_all('span')[-1].text
                         except Exception:
                             continue
 
                 try:
-                    has_credit = True
-                    credit_monthly_amount = ''.join(
-                        filter(str.isdigit, soup.find_all('span', class_="mr-[4px]")[-1].text))
-
-                except Exception:
-                    has_credit = False
-                    credit_monthly_amount = ""
-
-                try:
                     address = ', '.join(
-                        [e.text for e in soup.find_all('p', class_="text-gray text-[14px] font-[400] leading-[150%]")])
-                    delivery_info = "Бесплатнo"
-                    phone_number = ""
+                        [e.text.rstrip().lstrip() for e in soup.find_all(class_="ty-warehouses-store__address")])
+                    delivery_info = ''
+                    phone_number = soup.find(class_="ut2-vendor-block__phone").text
                 except Exception:
                     address = ""
                     phone_number = ""
                     delivery_info = ""
+
+                try:
+                    button = browser.find_element(By.ID, 'opener_fast_installment')
+                    button.click()
+                    time.sleep(10)
+                    credit = WebDriverWait(browser, 1).until(
+                        EC.presence_of_element_located((By.ID, "content_fast_installment"))
+                    )
+                    has_credit = True
+                    credit_monthly_amount = ''.join(filter(str.isdigit, credit.find_element(By.CLASS_NAME,
+                                                                                            "fast-installment-options-item-head-payment").find_element(
+                        By.TAG_NAME, "span").text))
+
+                except Exception:
+                    has_credit = False
+                    credit_monthly_amount = ""
 
                 obj = {
                     'name': str(product_name),
@@ -142,7 +148,7 @@ def prog(links, index, step):
                     'address': address,
                     'phone_number': phone_number,
                     'delivery_info': delivery_info,
-                    'website': 'Mediapark',
+                    'website': 'Elmakon',
                     'website_link': str(item_url)
                 }
                 print(product_name)

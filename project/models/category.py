@@ -1,6 +1,6 @@
 from enum import Enum
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import ENUM
 
 from db.database import Base
@@ -41,8 +41,9 @@ class Websites(Enum):
 
 class Category(Base):
     __tablename__ = "category"
+    __table_args__ = (UniqueConstraint("name", "website"),)
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, index=True)
+    name = Column(String, index=True)
     url = Column(String)
     website = Column(ENUM(Websites), default=Websites.texnomart)

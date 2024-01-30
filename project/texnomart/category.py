@@ -6,7 +6,6 @@ import time
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-from models.category import Websites
 from schemas import CategorySchema
 from services import create_category
 

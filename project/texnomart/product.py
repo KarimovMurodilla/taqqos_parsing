@@ -14,9 +14,10 @@ LINK = 'https://texnomart.uz'
 
 def browser_init():
     chrome_options = Options()
+    chrome_options.set_capability("pageLoadStrategy", "none")
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--window-size=1920,1080')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     return browser
 
@@ -129,8 +130,6 @@ def prog(links, index, step):
                     address = ""
                     phone_number = ""
                     delivery_info = ""
-
-                # id = browser.current_url.split('/')[-2]
 
                 obj = {
                     'name': str(product_name),

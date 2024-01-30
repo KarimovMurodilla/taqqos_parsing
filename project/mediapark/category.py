@@ -1,6 +1,6 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 import time
@@ -10,15 +10,15 @@ from webdriver_manager.chrome import ChromeDriverManager
 from schemas import CategorySchema
 from services import create_category
 
-
 LINK = 'https://mediapark.uz'
 
 
 def browser_init():
     chrome_options = Options()
+    chrome_options.set_capability("pageLoadStrategy", "none")
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--window-size=1920,1080')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     return browser
 
@@ -26,7 +26,7 @@ def browser_init():
 def prog():
     browser = browser_init()
     browser.get(LINK + '/category')
-    time.sleep(15)
+    time.sleep(20)
     while True:
         try:
             html = browser.page_source
@@ -42,8 +42,11 @@ def prog():
     for cat_item in category_list:
         cat_url_half = cat_item.get('href')
         cat_url = LINK + cat_url_half
+
         browser.get(cat_url)
+
         time.sleep(15)
+
         while True:
             try:
                 elements = browser.find_elements(By.XPATH, '//button[text()="Eщё"]')
@@ -64,6 +67,7 @@ def prog():
                 break
             except Exception:
                 time.sleep(0.5)
+
         for sub_cat_item in sub_cats:
             sub_cat_item_url = sub_cat_item.get('href')
             sub_cat_name = sub_cat_item.text.strip()
