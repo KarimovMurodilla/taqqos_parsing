@@ -6,12 +6,12 @@ from schemas import CategorySchema
 
 @database_connect
 def create_category(db: Session, data: CategorySchema) -> None:
-    category = db.query(Category).filter((Category.name == data.name) & (Category.url == data.url)).first()
+    category = db.query(Category).filter((Category.name == data.name) & (Category.website == data.website)).first()
     if category is None:
         category = Category(**data.dict())
         db.add(category)
     else:
-        category.name = data.name
+        category.url = data.url
     db.commit()
 
 
