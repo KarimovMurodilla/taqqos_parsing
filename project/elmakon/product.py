@@ -31,7 +31,7 @@ def prog(links, index, step):
         link = link_data[0]
         browser = browser_init()
         browser.get(link)
-        time.sleep(5)
+        time.sleep(10)
 
         def ab():
 
@@ -56,9 +56,10 @@ def prog(links, index, step):
             print(e)
             page_count = 1
 
-        for ind in range(1, page_count + 1):
+        for ind in range(1, page_count ):
             tot_url = link + f'page-{ind}/'
             browser.get(tot_url)
+            time.sleep(10)
 
             items = ab()
 

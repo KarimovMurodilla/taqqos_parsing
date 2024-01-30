@@ -12,14 +12,14 @@ from mediapark.product import thr_prog as mediapark_product
 
 
 @shared_task()
-def parse_technomart_category():
+def parse_texnomart_category():
     texnomart_category()
 
 
 @shared_task()
-def parse_technomart_product():
+def parse_texnomart_product():
     data = [[category.url, category.name] for category in get_all_categories(website="texnomart")]
-    texnomart_product(data, thr_ind=3)
+    texnomart_product(data, thr_ind=1)
 
 
 @shared_task()
@@ -30,7 +30,7 @@ def parse_elmakon_category():
 @shared_task()
 def parse_elmakon_product():
     data = [[category.url, category.name] for category in get_all_categories(website="elmakon")]
-    elmakon_product(data, thr_ind=3)
+    elmakon_product(data, thr_ind=1)
 
 
 @shared_task()
@@ -41,4 +41,4 @@ def parse_mediapark_category():
 @shared_task()
 def parse_mediapark_product():
     data = [[category.url, category.name] for category in get_all_categories(website="mediapark")]
-    mediapark_product(data, thr_ind=3)
+    mediapark_product(data, thr_ind=1)

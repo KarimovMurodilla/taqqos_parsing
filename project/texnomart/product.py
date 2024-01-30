@@ -28,7 +28,7 @@ def prog(links, index, step):
         link = link_data[0]
         browser = browser_init()
         browser.get(link)
-        time.sleep(10)
+        time.sleep(20)
 
         def ab():
 
