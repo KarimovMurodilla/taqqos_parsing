@@ -76,5 +76,6 @@ def prog():
                 'url': LINK + sub_cat_item_url,
                 'website': 'mediapark'
             }
+            print(data)
             data = CategorySchema(**data)
             create_category(data=data)
