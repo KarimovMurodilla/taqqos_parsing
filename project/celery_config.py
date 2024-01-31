@@ -17,27 +17,27 @@ app.conf.timezone = "UTC"
 
 app.conf.beat_schedule = {
     # Executes every Monday morning at 7:00 a.m.
-    'parse-texnomart-product': {
-        'task': 'tasks.parse_texnomart_product',
-        'schedule': crontab(hour=2, minute=35),
-    },
-    'parse-texnomart-category': {
-        'task': 'tasks.parse_texnomart_category',
-        'schedule': crontab(hour=0, minute=0),
-    },
-
-    'parse-elmakon-category': {
-        'task': 'tasks.parse_elmakon_category',
-        'schedule': crontab(hour=0, minute=0),
-    },
+    # 'parse-texnomart-product': {
+    #     'task': 'tasks.parse_texnomart_product',
+    #     'schedule': crontab(hour=10, minute=57),
+    # },
+    # 'parse-texnomart-category': {
+    #     'task': 'tasks.parse_texnomart_category',
+    #     'schedule': crontab(hour=0, minute=0),
+    # },
+    #
+    # 'parse-elmakon-category': {
+    #     'task': 'tasks.parse_elmakon_category',
+    #     'schedule': crontab(hour=2, minute=55),
+    # },
     'parse-elmakon-product': {
         'task': 'tasks.parse_elmakon_product',
-        'schedule': crontab(hour=2, minute=35),
+        'schedule': crontab(hour=12, minute=27),
     },
 
     # 'parse-mediapark-product': {
     #     'task': 'tasks.parse_mediapark_product',
-    #     'schedule': crontab(minute="*/3"),
+    #     'schedule': crontab(hour=2, minute=50),
     # },
     # 'parse-mediapark-category': {
     #     'task': 'tasks.parse_mediapark_category',

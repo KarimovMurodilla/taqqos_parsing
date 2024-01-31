@@ -18,7 +18,7 @@ def browser_init():
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--window-size=1920,1080')
-    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    browser = webdriver.Chrome(options=chrome_options)
     return browser
 
 
@@ -123,7 +123,7 @@ def prog(links, index, step):
                     credit_monthly_amount = ""
 
                 try:
-                    address = ', '.join([e.text for e in soup.find_all(class_="presence__address")])
+                    address = ' | '.join([e.text for e in soup.find_all(class_="presence__address")])
                     delivery_info = soup.find(class_="type-info__text").find('span').text
                     phone_number = soup.find(class_="presence__phone").text
                 except Exception:

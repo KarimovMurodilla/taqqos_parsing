@@ -19,7 +19,7 @@ def parse_texnomart_category():
 @shared_task()
 def parse_texnomart_product():
     data = [[category.url, category.name] for category in get_all_categories(website="texnomart")]
-    texnomart_product(data, thr_ind=1)
+    texnomart_product(data, thr_ind=3)
 
 
 @shared_task()
@@ -41,4 +41,4 @@ def parse_mediapark_category():
 @shared_task()
 def parse_mediapark_product():
     data = [[category.url, category.name] for category in get_all_categories(website="mediapark")]
-    mediapark_product(data, thr_ind=1)
+    mediapark_product(data, thr_ind=3)
