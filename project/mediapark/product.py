@@ -1,12 +1,9 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import json
 import time
-import threading
 import requests
 
 LINK = 'https://mediapark.uz'
@@ -18,14 +15,12 @@ def browser_init():
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--window-size=1920,1080')
-    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    browser = webdriver.Chrome(options=chrome_options)
     return browser
 
 
-def prog(links, index, step):
-    for i in range(index, len(links), step):
-        link_data = links[i]
-        link = link_data[0]
+def prog(links):
+    for link in links:
         browser = browser_init()
         browser.get(link)
         time.sleep(20)
@@ -53,7 +48,7 @@ def prog(links, index, step):
             print(e)
             page_count = 1
 
-        for ind in range(1, page_count):
+        for ind in range(1, page_count + 1):
             tot_url = link + f'?page={ind}'
             browser.get(tot_url)
             time.sleep(20)
@@ -147,17 +142,3 @@ def prog(links, index, step):
                 }
                 print(product_name)
                 requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)
-
-
-def thr_prog(links, thr_ind=1):
-    threads = []
-
-    # Створюємо 5 потоків
-    for i in range(thr_ind):
-        thread = threading.Thread(target=prog, args=(links, i, thr_ind))
-        threads.append(thread)
-        thread.start()
-
-    # Очікуємо завершення всіх потоків
-    for thread in threads:
-        thread.join()

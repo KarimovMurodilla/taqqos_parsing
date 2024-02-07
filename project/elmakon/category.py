@@ -24,14 +24,12 @@ def prog():
     browser.get(LINK)
     time.sleep(1)
 
-    while True:
-        try:
-            html = browser.page_source
-            soup = BeautifulSoup(html, 'html.parser')
-            category_list = soup.find(class_='ut2-menu__inbox').find('ul', class_='ty-menu__items').find_all('li', class_='ty-menu__item')
-            break
-        except Exception:
-            time.sleep(0.5)
+    try:
+        html = browser.page_source
+        soup = BeautifulSoup(html, 'html.parser')
+        category_list = soup.find(class_='ut2-menu__inbox').find('ul', class_='ty-menu__items').find_all('li', class_='ty-menu__item')
+    except Exception:
+        category_list = [1]
 
     del category_list[0]
 
@@ -43,7 +41,7 @@ def prog():
             data = {
                 "name": cat_name,
                 "url": cat_url,
-                "website": "elmakon"
+                "website": "allgood"
             }
             data = CategorySchema(**data)
             create_category(data=data)

@@ -4,11 +4,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import json
 import time
-import threading
 import requests
 
 LINK = 'https://elmakon.uz'
@@ -25,13 +23,13 @@ def browser_init():
     return browser
 
 
-def prog(links, index, step):
-    for i in range(index, len(links), step):
-        link_data = links[i]
-        link = link_data[0]
+def prog(links):
+    for link in links:
         browser = browser_init()
         browser.get(link)
         time.sleep(10)
+        html = browser.page_source
+        soup = BeautifulSoup(html, 'html.parser')
 
         def ab():
 
@@ -49,14 +47,15 @@ def prog(links, index, step):
             return items
 
         try:
-            page_count = int(browser.find_element(By.ID, 'ut2_pagination_block_bottom').find_element(By.CLASS_NAME,
-                                                                                                     'ty-pagination__items').find_elements(
-                By.CLASS_NAME, 'ty-pagination__item')[-1].text)
+            page_count = int(soup.find(
+                id='ut2_pagination_block_bottom'
+            ).find(class_='ty-pagination__items').find_all(
+                class_='ty-pagination__item')[-1].text)
         except Exception as e:
             print(e)
             page_count = 1
 
-        for ind in range(1, page_count ):
+        for ind in range(1, page_count + 1):
             tot_url = link + f'page-{ind}/'
             browser.get(tot_url)
             time.sleep(10)
@@ -154,17 +153,3 @@ def prog(links, index, step):
                 }
                 print(product_name)
                 requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)
-
-
-def thr_prog(links, thr_ind=1):
-    threads = []
-
-    # Створюємо 5 потоків
-    for i in range(thr_ind):
-        thread = threading.Thread(target=prog, args=(links, i, thr_ind))
-        threads.append(thread)
-        thread.start()
-
-    # Очікуємо завершення всіх потоків
-    for thread in threads:
-        thread.join()

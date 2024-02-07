@@ -1,13 +1,12 @@
+import logging
+
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import json
 import time
-import threading
 import requests
-from webdriver_manager.chrome import ChromeDriverManager
 
 LINK = 'https://texnomart.uz'
 
@@ -22,18 +21,14 @@ def browser_init():
     return browser
 
 
-def prog(links, index, step):
-    for i in range(index, len(links), step):
-        link_data = links[i]
-        link = link_data[0]
+def prog(links):
+    for link in links:
         browser = browser_init()
         browser.get(link)
         time.sleep(20)
 
         def ab():
-
             is_page_loading = True
-
             while is_page_loading:
                 html = browser.page_source
                 soup = BeautifulSoup(html, 'html.parser')
@@ -49,7 +44,7 @@ def prog(links, index, step):
             page_count = int(
                 browser.find_element(By.CLASS_NAME, 'pagination').find_elements(By.TAG_NAME, 'span')[-2].text)
         except Exception as e:
-            print(e)
+            logging.warning(e)
             page_count = 1
 
         for ind in range(1, page_count + 1):
@@ -58,8 +53,8 @@ def prog(links, index, step):
 
             items = ab()
 
-            print(f'page_count - {page_count}')
-            print(f'page - {ind}')
+            print(f'page_count - {page_count}, page - {ind}')
+
             for item in items:
                 item_title = item.find(class_='product-top')
                 item_url_half = item_title.find('a').get('href')
@@ -73,7 +68,8 @@ def prog(links, index, step):
 
                 try:
                     product_name = soup.find('h1', class_='product__name').text
-                except Exception:
+                except Exception as e:
+                    logging.warning(e)
                     continue
 
                 try:
@@ -107,9 +103,7 @@ def prog(links, index, step):
                     for feature in features:
                         try:
                             features_list[
-                                feature.find(
-                                    'h2', class_='characteristic__name'
-                                ).text
+                                feature.find('h2', class_='characteristic__name').text
                             ] = feature.find('span', class_='characteristic__value').text
                         except Exception:
                             continue
@@ -146,20 +140,5 @@ def prog(links, index, step):
                     'website': 'Texnomart',
                     'website_link': str(item_url)
                 }
-                print(product_name)
+                logging.info(product_name)
                 requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)
-
-
-def thr_prog(links, thr_ind=1):
-    threads = []
-
-    # Створюємо 5 потоків
-    for i in range(thr_ind):
-        thread = threading.Thread(target=prog, args=(links, i, thr_ind))
-        threads.append(thread)
-        thread.start()
-
-    # Очікуємо завершення всіх потоків
-    for thread in threads:
-        thread.join()
-
