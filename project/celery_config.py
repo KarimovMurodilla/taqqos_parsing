@@ -55,47 +55,47 @@ app.conf.beat_schedule = {
 
     'parse-allgood-product': {
         'task': 'tasks.parse_allgood_product',
-        'schedule': crontab(hour=4, minute=30),
+        'schedule': crontab(hour=6, minute=30),
     },
     'parse-allgood-category': {
         'task': 'tasks.parse_allgood_category',
-        'schedule': crontab(hour=3, minute=40),
+        'schedule': crontab(hour=6, minute=10),
     },
 
     'parse-asaxiy-product': {
         'task': 'tasks.parse_asaxiy_product',
-        'schedule': crontab(hour=4, minute=20),
+        'schedule': crontab(hour=6, minute=20),
     },
     'parse-asaxiy-category': {
         'task': 'tasks.parse_asaxiy_category',
-        'schedule': crontab(hour=3, minute=40),
+        'schedule': crontab(hour=6, minute=10),
     },
 
     'parse-goodzone-product': {
         'task': 'tasks.parse_goodzone_product',
-        'schedule': crontab(hour=4, minute=10),
+        'schedule': crontab(hour=6, minute=20),
     },
     'parse-goodzone-category': {
         'task': 'tasks.parse_goodzone_category',
-        'schedule': crontab(hour=3, minute=40),
+        'schedule': crontab(hour=6, minute=10),
     },
 
     'parse-radius-product': {
         'task': 'tasks.parse_radius_product',
-        'schedule': crontab(hour=4, minute=0),
+        'schedule': crontab(hour=6, minute=20),
     },
     'parse-radius-category': {
         'task': 'tasks.parse_radius_category',
-        'schedule': crontab(hour=3, minute=40),
+        'schedule': crontab(hour=6, minute=10),
     },
 
     'parse-idea-product': {
         'task': 'tasks.parse_idea_product',
-        'schedule': crontab(hour=3, minute=50),
+        'schedule': crontab(hour=6, minute=15),
     },
     'parse-idea-category': {
         'task': 'tasks.parse_idea_category',
-        'schedule': crontab(hour=3, minute=40),
+        'schedule': crontab(hour=6, minute=10),
     }
 }
 
