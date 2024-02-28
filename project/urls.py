@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 
-from parser_runners import router as parser_router
+from maxcom.router import router as maxcom_router
+from pcmarket.router import router as pcmarket_router
 
 MAIN_URL = '/api/v1/'
 
 urls = [
-    ('parse-maxcom', parser_router)
+    ('parse-maxcom', maxcom_router),
+    ('parse-pcmarket', pcmarket_router)
 ]
 
 
