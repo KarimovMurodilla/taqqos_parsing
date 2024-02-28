@@ -1,3 +1,4 @@
+import asyncio
 from celery import shared_task
 
 from services import get_all_categories
@@ -27,7 +28,7 @@ from radius.category import prog as radius_category
 from radius.product import prog as radius_product
 
 from idea.category import prog as idea_category
-from idea.product import prog as idea_product
+from idea.product import main as idea_product
 
 
 @shared_task()
@@ -114,8 +115,8 @@ def parse_radius_category():
 
 @shared_task()
 def parse_radius_product():
-    links = [category.url for category in get_all_categories(website="radius")]
-    radius_product(links)
+    for category in get_all_categories(website="radius"):
+        radius_product(category.url)
 
 
 @shared_task()
@@ -125,5 +126,4 @@ def parse_idea_category():
 
 @shared_task()
 def parse_idea_product():
-    links = [category.url for category in get_all_categories(website="idea")]
-    idea_product(links)
+    asyncio.run(idea_product())
