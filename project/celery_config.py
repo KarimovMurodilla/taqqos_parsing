@@ -9,7 +9,14 @@ app = Celery(
     __name__,
     broker=redis_url,
     backend=redis_url,
-    include=[ "maxcom.product"]
+    include=[
+        "maxcom.product",
+        "maxcom.category",
+        "pcmarket.product",
+        "pcmarket.category",
+        "ikarvon.category",
+        "ikarvon.product",
+    ]
 )
 app.conf.enable_utc = True
 app.conf.timezone = "UTC"

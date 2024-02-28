@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 
-from maxcom.product import category_parse as maxcom_parser
+from maxcom.product import category_parse
 
 router = APIRouter()
 
 
 @router.get('/')
-def parse_maxcom():
-    maxcom_parser.delay()
+def category_parse_maxcom():
+    category_parse.delay()
     return {"detail": "ok"}
