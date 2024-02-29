@@ -126,7 +126,7 @@ def parser(link):
                 'website': 'Maxcom',
                 'website_link': str(item_url)
             }
-            print("Maxcom", product_name)
+            print(f"Maxcom, {product_name}")
             try:
                 r = requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj, timeout=120)
                 print(r.status_code)
