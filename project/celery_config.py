@@ -10,6 +10,7 @@ app = Celery(
     broker=redis_url,
     backend=redis_url,
     include=[
+        "tasks",
         "maxcom.product",
         "maxcom.category",
         "pcmarket.product",
