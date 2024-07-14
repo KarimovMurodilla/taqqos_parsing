@@ -10,13 +10,12 @@ app = Celery(
     broker=redis_url,
     backend=redis_url,
     include=[
-        'tasks'
-        # "maxcom.product",
-        # "maxcom.category",
-        # "pcmarket.product",
-        # "pcmarket.category",
-        # "ikarvon.category",
-        # "ikarvon.product",
+        "maxcom.product",
+        "maxcom.category",
+        "pcmarket.product",
+        "pcmarket.category",
+        "ikarvon.category",
+        "ikarvon.product",
     ]
 )
 app.conf.enable_utc = True
