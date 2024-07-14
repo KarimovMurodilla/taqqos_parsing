@@ -64,35 +64,35 @@ def parse_elmakon_product():
     except Exception as e:
         logging.error(f"Error in parse_elmakon_product: {e}")
 
-# @shared_task()
-# def parse_mediapark_category():
-#     try:
-#         mediapark_category()
-#     except Exception as e:
-#         logging.error(f"Error in parse_mediapark_category: {e}")
+@shared_task()
+def parse_mediapark_category():
+    try:
+        mediapark_category()
+    except Exception as e:
+        logging.error(f"Error in parse_mediapark_category: {e}")
 
-# @shared_task()
-# def parse_mediapark_product():
-#     try:
-#         data = [category.url for category in get_all_categories(website="mediapark")]
-#         mediapark_product(data)
-#     except Exception as e:
-#         logging.error(f"Error in parse_mediapark_product: {e}")
+@shared_task()
+def parse_mediapark_product():
+    try:
+        data = [category.url for category in get_all_categories(website="mediapark")]
+        mediapark_product(data)
+    except Exception as e:
+        logging.error(f"Error in parse_mediapark_product: {e}")
 
-# @shared_task()
-# def parse_openshop_category():
-#     try:
-#         openshop_category()
-#     except Exception as e:
-#         logging.error(f"Error in parse_openshop_category: {e}")
+@shared_task()
+def parse_openshop_category():
+    try:
+        openshop_category()
+    except Exception as e:
+        logging.error(f"Error in parse_openshop_category: {e}")
 
-# @shared_task()
-# def parse_openshop_product():
-#     try:
-#         links = [category.url for category in get_all_categories(website="openshop")]
-#         openshop_product(links)
-#     except Exception as e:
-#         logging.error(f"Error in parse_openshop_product: {e}")
+@shared_task()
+def parse_openshop_product():
+    try:
+        links = [category.url for category in get_all_categories(website="openshop")]
+        openshop_product(links)
+    except Exception as e:
+        logging.error(f"Error in parse_openshop_product: {e}")
 
 @shared_task()
 def parse_allgood_category():

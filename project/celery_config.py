@@ -43,23 +43,23 @@ app.conf.beat_schedule = {
         'schedule': crontab(hour=3, minute=40),
     },
 
-    'parse-mediapark-product': {
-        'task': 'tasks.parse_mediapark_product',
-        'schedule': crontab(hour=0, minute=7),
-    },
-    'parse-mediapark-category': {
-        'task': 'tasks.parse_mediapark_category',
-        'schedule': crontab(),
-    },
+    # 'parse-mediapark-product': {
+    #     'task': 'tasks.parse_mediapark_product',
+    #     'schedule': crontab(hour=0, minute=7),
+    # },
+    # 'parse-mediapark-category': {
+    #     'task': 'tasks.parse_mediapark_category',
+    #     'schedule': crontab(),
+    # },
 
-    'parse-openshop-product': {
-        'task': 'tasks.parse_openshop_product',
-        'schedule': crontab(hour=0, minute=24),
-    },
-    'parse-openshop-category': {
-        'task': 'tasks.parse_openshop_category',
-        'schedule': crontab(),
-    },
+    # 'parse-openshop-product': {
+    #     'task': 'tasks.parse_openshop_product',
+    #     'schedule': crontab(hour=0, minute=24),
+    # },
+    # 'parse-openshop-category': {
+    #     'task': 'tasks.parse_openshop_category',
+    #     'schedule': crontab(),
+    # },
 
     'parse-allgood-product': {
         'task': 'tasks.parse_allgood_product',
