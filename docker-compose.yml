@@ -51,9 +51,11 @@ services:
     depends_on:
       - web
       - redis
-      
+
   scheduler:
     <<: *web
+    ports:
+      - "5005:8000"
     command: python scheduler.py
     depends_on:
       - web
