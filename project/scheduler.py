@@ -15,20 +15,20 @@ async def main():
     # Initialize scheduler
     scheduler = AsyncIOScheduler()
 
-    # Schedule task to run every hour
-    scheduler.add_job(
-        parse_maxcom_product,
-        CronTrigger(hour='*/1')  # Executes every hour
-    )
-    
+    # Schedule task to run every hour    
     scheduler.add_job(
         parse_pcmarket_product,
-        CronTrigger(hour='*/1')  # Executes every hour
+        CronTrigger(hour='*/2')  # Executes every 2 hour
     )
     
     scheduler.add_job(
         parse_ikarvon_product,
-        CronTrigger(hour='*/1')  # Executes every hour
+        CronTrigger(hour='*/2')  # Executes every 2 hour
+    )
+
+    scheduler.add_job(
+        parse_maxcom_product,
+        CronTrigger(hour='*/2')  # Executes every 2 hour
     )
 
     # Start the scheduler
