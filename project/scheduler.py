@@ -18,13 +18,12 @@ async def main():
 
     # Schedule task to run every hour    
     scheduler.add_job(
-        parse_pcmarket_product,
+        parse_ikarvon_product,
         IntervalTrigger(hours=1)  # Executes every 2 hour
     )
-    parse_pcmarket_product()
-    
+
     scheduler.add_job(
-        parse_ikarvon_product,
+        parse_pcmarket_product,
         IntervalTrigger(hours=1)  # Executes every 2 hour
     )
 
