@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.interval import IntervalTrigger
 
 from tasks.maxcom import parse_maxcom_product
 from tasks.pcmarket import parse_pcmarket_category, parse_pcmarket_product
@@ -18,17 +19,18 @@ async def main():
     # Schedule task to run every hour    
     scheduler.add_job(
         parse_pcmarket_product,
-        CronTrigger(hour='*/2')  # Executes every 2 hour
+        IntervalTrigger(hours=1)  # Executes every 2 hour
     )
+    parse_pcmarket_product()
     
     scheduler.add_job(
         parse_ikarvon_product,
-        CronTrigger(hour='*/2')  # Executes every 2 hour
+        IntervalTrigger(hours=1)  # Executes every 2 hour
     )
 
     scheduler.add_job(
         parse_maxcom_product,
-        CronTrigger(hour='*/2')  # Executes every 2 hour
+        IntervalTrigger(hours=1)  # Executes every 2 hour
     )
 
     # Start the scheduler
