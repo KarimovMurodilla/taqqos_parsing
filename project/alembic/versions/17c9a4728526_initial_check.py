@@ -1,8 +1,8 @@
-"""empty message
+"""Initial check
 
-Revision ID: 5ee4998a30a2
+Revision ID: 17c9a4728526
 Revises: 
-Create Date: 2024-01-26 21:45:01.048781
+Create Date: 2024-07-16 13:48:53.335027
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '5ee4998a30a2'
+revision: str = '17c9a4728526'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,9 +25,10 @@ def upgrade() -> None:
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('url', sa.String(), nullable=True),
     sa.Column('website', postgresql.ENUM('texnomart', 'mediapark', 'olcha', 'asaxiy', 'openshop', 'elmakon', 'discount', 'allgood', 'goodzone', 'radius', 'zon', 'ikarvon', 'eSavdo', 'idea', 'mytech', 'royaltech', 'elso', 'mago', 'macbro', 'azbo', 'maxcom', 'openshop_uz', 'brandstore', 'ultrashop', 'gshop', 'mycom', 'pcmarket', 'bozon', 'mionline', 'treetech', name='websites'), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('name', 'website')
     )
-    op.create_index(op.f('ix_category_name'), 'category', ['name'], unique=True)
+    op.create_index(op.f('ix_category_name'), 'category', ['name'], unique=False)
     # ### end Alembic commands ###
 
 

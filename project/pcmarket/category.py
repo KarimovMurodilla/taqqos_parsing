@@ -20,7 +20,7 @@ def browser_init():
     return browser
 
 
-@app.task
+# @app.task
 def parse_category():
     browser = browser_init()
     browser.get(LINK)

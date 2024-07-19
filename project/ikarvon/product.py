@@ -59,7 +59,11 @@ def parse_product(links):
 
             print(f'page_count - {page_count}, page - {ind}')
             for item in items:
-                a = item.find('a')
+                a = item.find('a', class_="d-block")
+                
+                if not a:
+                    continue
+
                 item_url = a.get('href')
                 browser.get(item_url)
 

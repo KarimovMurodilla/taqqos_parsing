@@ -14,10 +14,10 @@ services:
       #- PGDATA
       - POSTGRES_PASSWORD=taqqos_parsing
       - POSTGRES_USER=taqqos_parsing
-      - POSTGRES_DB=taqqos_parsinggit push
+      - POSTGRES_DB=taqqos_parsing
       #- POSTGRES_TZ
 
-  web:
+  web: &web
     build: ./project
     ports:
       - 8004:8000
@@ -51,6 +51,12 @@ services:
     depends_on:
       - web
       - redis
+      
+  scheduler:
+    <<: *web
+    command: python scheduler.py
+    depends_on:
+      - web
 
   redis:
     image: redis:7

@@ -3,3 +3,12 @@ __pycache__
 .DS_Store
 project/celerybeat-schedule
 .idea
+
+database.db
+
+*.bak
+*.dat
+*.dir
+
+env
+.env

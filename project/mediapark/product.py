@@ -23,6 +23,7 @@ def prog(links):
     for link in links:
         browser = browser_init()
         browser.get(link)
+        print("Link is:", link)
         time.sleep(20)
 
         def ab():
@@ -40,12 +41,14 @@ def prog(links):
                 except Exception:
                     time.sleep(1)
             return items
+        
+        print("\n\n-----------After ab-------")
 
         try:
             page_count = int(
                 browser.find_element(By.CLASS_NAME, 'pagination').find_elements(By.TAG_NAME, 'li')[-2].text)
         except Exception as e:
-            print(e)
+            print("Exception:", e)
             page_count = 1
 
         for ind in range(1, page_count + 1):

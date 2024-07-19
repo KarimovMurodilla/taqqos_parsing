@@ -22,7 +22,7 @@ def browser_init():
     return browser
 
 
-@app.task
+# @app.task
 def parse_product(links):
     for link in links:
         print(link)
