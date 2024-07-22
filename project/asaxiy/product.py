@@ -128,5 +128,5 @@ def prog(links):
                     'website': 'Asaxiy',
                     'website_link': str(item_url)
                 }
-                print(product_name)
+                print("Asaxiy", product_name)
                 requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)

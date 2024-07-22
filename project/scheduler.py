@@ -1,35 +1,25 @@
+import pytz
 import asyncio
 import logging
+
 from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 
-from tasks.maxcom import parse_maxcom_product
-from tasks.pcmarket import parse_pcmarket_category, parse_pcmarket_product
-from tasks.ikarvon import parse_ikarvon_category, parse_ikarvon_product
+from tasks.parser import parse_and_save
 
 
 async def main():
     logging.basicConfig(level=logging.INFO)
-
-    # Initialize scheduler
+    
+    tz = pytz.timezone('Asia/Tashkent')
     scheduler = AsyncIOScheduler()
 
     # Schedule task to run every hour    
     scheduler.add_job(
-        parse_ikarvon_product,
-        IntervalTrigger(hours=1)  # Executes every 2 hour
-    )
-
-    scheduler.add_job(
-        parse_pcmarket_product,
-        IntervalTrigger(hours=1)  # Executes every 2 hour
-    )
-
-    scheduler.add_job(
-        parse_maxcom_product,
-        IntervalTrigger(hours=1)  # Executes every 2 hour
+        parse_and_save,
+        CronTrigger(hour=7, minute=0, timezone=tz)
     )
 
     # Start the scheduler

@@ -27,6 +27,7 @@ def prog():
     browser.get(LINK)
     time.sleep(5)
     button = browser.find_element(By.CLASS_NAME, 'open__menu')
+    print(button)
     button.click()
     navbar = WebDriverWait(browser, 1).until(EC.presence_of_element_located((By.CLASS_NAME, 'mega__menu')))
     try:
@@ -63,6 +64,8 @@ def prog():
                     'url': sub_cut_url,
                     'website': 'asaxiy'
                 }
+                print(data)
+
                 data = CategorySchema(**data)
                 create_category(data=data)
         else:
