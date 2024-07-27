@@ -43,5 +43,6 @@ def prog():
                     "website": "goodzone"
                 }
                 data = CategorySchema(**data)
+                print(data)
                 create_category(data=data)
 

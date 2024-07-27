@@ -1,0 +1,10 @@
+——CATEGORIES——:
+all_categories: https://mobile.olcha.uz/api/v2/categories
+category [samsung]: https://mobile.olcha.uz/api/v2/manufacturers/samsung/categories
+category_name: https://mobile.olcha.uz/api/v2/category/knigi
+- inside category: https://mobile.olcha.uz/api/v2/manufacturer/filter?category=mirovaya-literatura
+parent category: https://mobile.olcha.uz/api/v2/parent-categories
+
+——PRODUCTS——:
+samsung [televizor]: https://mobile.olcha.uz/api/v2/products?manufacturer%5B0%5D=2&category=televizory
+per-page: https://mobile.olcha.uz/api/v2/products?category=noutbuki&per_page=24

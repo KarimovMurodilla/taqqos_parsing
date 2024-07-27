@@ -24,7 +24,7 @@ def browser_init():
 def prog():
     browser = browser_init()
     browser.get(LINK+'/ru/')
-    time.sleep(1)
+    time.sleep(5)
 
     while True:
         try:
@@ -47,5 +47,6 @@ def prog():
                         "url": cat_url,
                         "website": "texnomart"
                     }
+                    print(data)
                     data = CategorySchema(**data)
                     create_category(data=data)

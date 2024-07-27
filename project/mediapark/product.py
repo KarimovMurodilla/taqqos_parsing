@@ -5,16 +5,22 @@ from bs4 import BeautifulSoup
 import json
 import time
 import requests
+import traceback
 
 LINK = 'https://mediapark.uz'
 
 
 def browser_init():
     chrome_options = Options()
-    chrome_options.set_capability("pageLoadStrategy", "none")
+    chrome_options.set_capability("pageLoadStrategy", "normal")  # Try 'normal' or 'eager' instead of 'none'
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--window-size=1920,1080')
+    chrome_options.add_argument('--remote-debugging-port=9222')  # Useful for debugging
+    chrome_options.add_argument('--enable-logging')
+    chrome_options.add_argument('--v=1')
+    
     browser = webdriver.Chrome(options=chrome_options)
     return browser
 
@@ -24,7 +30,7 @@ def prog(links):
         browser = browser_init()
         browser.get(link)
         print("Link is:", link)
-        time.sleep(20)
+        time.sleep(5)
 
         def ab():
 
@@ -34,27 +40,26 @@ def prog(links):
                 html = browser.page_source
                 soup = BeautifulSoup(html, 'html.parser')
                 try:
-                    items = soup.find(class_='grid gap-[16px] mt-[16px] pb-[10px] grid-cols-1').find_all('a',
-                                                                                                         class_='product-cart')
+                    items = soup.find_all('a', class_='product-cart')
                     is_page_loading = False
                     break
-                except Exception:
+                except Exception as e:
+                    print(e)
                     time.sleep(1)
             return items
         
-        print("\n\n-----------After ab-------")
-
         try:
             page_count = int(
                 browser.find_element(By.CLASS_NAME, 'pagination').find_elements(By.TAG_NAME, 'li')[-2].text)
         except Exception as e:
-            print("Exception:", e)
+            traceback.print_exc()
             page_count = 1
+
 
         for ind in range(1, page_count + 1):
             tot_url = link + f'?page={ind}'
             browser.get(tot_url)
-            time.sleep(20)
+            # time.sleep(20)
             items = ab()
 
             print(f'page_count - {page_count}, page - {ind}')
@@ -63,37 +68,42 @@ def prog(links):
                 item_url = LINK + item_url_half
                 browser.get(item_url)
 
-                time.sleep(20)
+                time.sleep(500)
 
                 html = browser.page_source
                 soup = BeautifulSoup(html, 'html.parser')
 
                 try:
-                    product_name = soup.find('h1', class_='text-[24px] text-dark font-[600]').text
+                    product_name = soup.find('div', class_='flex items-center justify-between').find('h1').get_text(strip=True)
                 except Exception:
+                    traceback.print_exc()
                     continue
 
                 try:
-                    img = soup.find(class_='rounded-[24px] overflow-hidden w-full relative').find('img').get("src")
-                    img = LINK + str(img)
-                except Exception:
+                    lazy_load = soup.find('div', class_='LazyLoad is-visible', attrs={'style': "height: 490px;"})
+                    img = lazy_load.find('img')['src']
+                except Exception as e:
+                    traceback.print_exc()
                     img = ''
 
                 try:
                     price = ''.join(
-                        filter(str.isdigit, soup.find('h2', class_='text-[22px] font-[700] text-dark').text))
-                except Exception:
+                        filter(str.isdigit, soup.find('h3', class_='text-[22px] font-[700] text-dark').text))
+                except Exception as e:
+                    traceback.print_exc()
                     price = '0'
 
                 try:
                     description = soup.find(class_="rich ql-editor").text
-                except Exception:
+                except Exception as e:
+                    traceback.print_exc()
                     description = ""
 
                 try:
                     features = soup.find(class_="mt-[12px] flex flex-col laptop:gap-[12px]").find_all(
                         class_='grid grid-cols-2 items-center gap-[10px]')
-                except Exception:
+                except Exception as e:
+                    traceback.print_exc()
                     features = ""
                 features_list = {}
                 if features:
@@ -114,7 +124,8 @@ def prog(links):
                     credit_monthly_amount = ''.join(
                         filter(str.isdigit, soup.find_all('span', class_="mr-[4px]")[-1].text))
 
-                except Exception:
+                except Exception as e:
+                    traceback.print_exc()
                     has_credit = False
                     credit_monthly_amount = ""
 
@@ -123,9 +134,10 @@ def prog(links):
                         [e.text for e in soup.find_all('p', class_="text-gray text-[14px] font-[400] leading-[150%]")])
                     delivery_info = "Бесплатнo"
                     phone_number = ""
-                except Exception:
-                    address = ""
-                    phone_number = ""
+                except Exception as e:
+                    traceback.print_exc()
+                    address = "Ташкент, Шайхонтохурский район, ул. Караташ, 11А, Ташкент, Юнусабадский район, ул.Ш.Рашидова 16A, Ташкент, Мирзо-Улугбекский район, проспект Мирзо-Улугбек, ул. Т.Малик, дом 3A, Ташкент, Учтепинский район, улица Фархадская, дом 31А ,  Ташкент, Юнусабадский район, массив Юнусабад, 19-й квартал, 119"
+                    phone_number = "+998 71 203 33 33"
                     delivery_info = ""
 
                 obj = {
@@ -143,5 +155,7 @@ def prog(links):
                     'website': 'Mediapark',
                     'website_link': str(item_url)
                 }
-                print(product_name)
-                requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)
+                print("Mediapark,", product_name)
+
+                r = requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)
+                print("Response status:", r.status_code)

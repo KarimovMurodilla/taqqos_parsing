@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import time
+import traceback
 
 from schemas import CategorySchema
 from services import create_category
@@ -29,6 +30,7 @@ def prog():
         soup = BeautifulSoup(html, 'html.parser')
         category_list = soup.find(class_='ut2-menu__inbox').find('ul', class_='ty-menu__items').find_all('li', class_='ty-menu__item')
     except Exception:
+        traceback.print_exc()
         category_list = [1]
 
     del category_list[0]
@@ -41,7 +43,7 @@ def prog():
             data = {
                 "name": cat_name,
                 "url": cat_url,
-                "website": "allgood"
+                "website": "elmakon"
             }
             data = CategorySchema(**data)
             create_category(data=data)
