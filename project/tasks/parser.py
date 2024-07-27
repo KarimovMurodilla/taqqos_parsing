@@ -13,10 +13,6 @@ from .goodzone import parse_goodzone_product
 
 
 def parse_and_save():
-    parse_pcmarket_product()
-    parse_maxcom_product()
-    parse_asaxiy_product()
-    parse_ikarvon_product()
     parse_texnomart_product()
     parse_allgood_product()    
     parse_mediapark_product()
@@ -25,3 +21,7 @@ def parse_and_save():
     parse_elmakon_product()
     parse_olcha_product()
     parse_goodzone_product()
+    parse_pcmarket_product()
+    parse_maxcom_product()
+    parse_asaxiy_product()
+    parse_ikarvon_product()
