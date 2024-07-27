@@ -13,15 +13,63 @@ from .goodzone import parse_goodzone_product
 
 
 def parse_and_save():
-    parse_texnomart_product()
-    parse_allgood_product()    
-    parse_mediapark_product()
-    parse_openshop_product()
-    parse_radius_product()
-    parse_elmakon_product()
-    parse_olcha_product()
-    parse_goodzone_product()
-    parse_pcmarket_product()
-    parse_maxcom_product()
-    parse_asaxiy_product()
-    parse_ikarvon_product()
+    try:
+        parse_allgood_product()
+    except Exception as e:
+        print(f"Error in parse_allgood_product: {e}")
+    
+    try:
+        parse_mediapark_product()
+    except Exception as e:
+        print(f"Error in parse_mediapark_product: {e}")
+    
+    try:
+        parse_openshop_product()
+    except Exception as e:
+        print(f"Error in parse_openshop_product: {e}")
+    
+    try:
+        parse_radius_product()
+    except Exception as e:
+        print(f"Error in parse_radius_product: {e}")
+
+    try:
+        parse_elmakon_product()
+    except Exception as e:
+        print(f"Error in parse_elmakon_product: {e}")
+    
+    try:
+        parse_olcha_product()
+    except Exception as e:
+        print(f"Error in parse_olcha_product: {e}")
+
+    try:
+        parse_goodzone_product()
+    except Exception as e:
+        print(f"Error in parse_goodzone_product: {e}")
+    
+    try:
+        parse_pcmarket_product()
+    except Exception as e:
+        print(f"Error in parse_pcmarket_product: {e}")
+
+    try:
+        parse_maxcom_product()
+    except Exception as e:
+        print(f"Error in parse_maxcom_product: {e}")
+    
+    try:
+        parse_asaxiy_product()
+    except Exception as e:
+        print(f"Error in parse_asaxiy_product: {e}")
+    
+    try:
+        parse_ikarvon_product()
+    except Exception as e:
+        print(f"Error in parse_ikarvon_product: {e}")
+
+    try:
+        parse_texnomart_product()
+    except Exception as e:
+        print(f"Error in parse_texnomart_product: {e}")
+    

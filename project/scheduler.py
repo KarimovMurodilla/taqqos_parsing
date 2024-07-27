@@ -19,7 +19,7 @@ async def main():
     # Schedule task to run every hour    
     scheduler.add_job(
         parse_and_save,
-        CronTrigger(hour=12, minute=30, timezone=tz)
+        CronTrigger(hour=17, minute=30, timezone=tz)
     )
 
     # Start the scheduler
