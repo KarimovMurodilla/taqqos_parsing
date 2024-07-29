@@ -14,6 +14,8 @@ def parse_olcha_category():
 def parse_olcha_product():
     try:
         data = [category.url for category in get_all_categories(website="olcha")]
+        if not data:
+            parse_olcha_category()
         olcha_product(data)
     except Exception as e:
         print(f"Error in parse_olcha_product: {e}")
