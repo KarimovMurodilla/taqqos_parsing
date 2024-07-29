@@ -14,6 +14,8 @@ def parse_mediapark_category():
 def parse_mediapark_product():
     try:
         data = [category.url for category in get_all_categories(website="mediapark")]
+        if not data:
+            parse_mediapark_category() 
         mediapark_product(data)
     except Exception as e:
         print(f"Error in parse_mediapark_product: {e}")
