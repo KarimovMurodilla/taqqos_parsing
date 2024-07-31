@@ -26,6 +26,7 @@ def prog():
     browser = browser_init()
     browser.get(LINK + '/category')
     time.sleep(20)
+    print("After time sleep 1")
     while True:
         try:
             html = browser.page_source
@@ -34,11 +35,13 @@ def prog():
                 'a',
                 class_='border border-back rounded-[24px] p-[17px] flex flex-col items-center min-w-[213px] max-w-[213px]'
             )
+            print("Inside while 1")
             break
         except Exception:
             traceback.print_exc()
             time.sleep(0.5)
 
+    print("Before for 1")
     for cat_item in category_list:
         cat_url_half = cat_item.get('href')
         cat_url = LINK + cat_url_half
