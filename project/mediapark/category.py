@@ -14,10 +14,14 @@ LINK = 'https://mediapark.uz'
 
 def browser_init():
     chrome_options = Options()
-    chrome_options.set_capability("pageLoadStrategy", "none")
+    chrome_options.set_capability("pageLoadStrategy", "normal")  # Try 'normal' or 'eager' instead of 'none'
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--window-size=1920,1080')
+    chrome_options.add_argument('--remote-debugging-port=9222')  # Useful for debugging
+    chrome_options.add_argument('--enable-logging')
+    chrome_options.add_argument('--v=1')
     browser = webdriver.Chrome(options=chrome_options)
     return browser
 
@@ -25,7 +29,7 @@ def browser_init():
 def prog():
     browser = browser_init()
     browser.get(LINK + '/category')
-    time.sleep(20)
+    time.sleep(5)
     print("After time sleep 1")
     while True:
         try:
@@ -68,6 +72,7 @@ def prog():
                 html = browser.page_source
                 soup = BeautifulSoup(html, 'html.parser')
                 sub_cats = soup.find_all('a', class_='text-[14px] font-[400] text-gray hover:text-blue-primary')
+                print("Sub cats:", sub_cats)
                 break
             except Exception:
                 traceback.print_exc()
