@@ -46,6 +46,7 @@ def prog():
             time.sleep(0.5)
 
     print("Before for 1")
+    print("Category_list", category_list)
     for cat_item in category_list:
         cat_url_half = cat_item.get('href')
         cat_url = LINK + cat_url_half
