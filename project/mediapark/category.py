@@ -34,6 +34,8 @@ def prog():
     while True:
         try:
             html = browser.page_source
+            with open('source.html', 'w', encoding='utf-8') as f:
+                f.write(html)
             soup = BeautifulSoup(html, 'html.parser')
             category_list = soup.find_all(
                 'a',
