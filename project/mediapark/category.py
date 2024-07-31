@@ -1,9 +1,10 @@
+import time
+import traceback
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
-import time
-
 
 from schemas import CategorySchema
 from services import create_category
@@ -35,6 +36,7 @@ def prog():
             )
             break
         except Exception:
+            traceback.print_exc()
             time.sleep(0.5)
 
     for cat_item in category_list:
@@ -50,6 +52,7 @@ def prog():
                 elements = browser.find_elements(By.XPATH, '//button[text()="Eщё"]')
                 break
             except Exception:
+                traceback.print_exc()
                 time.sleep(0.5)
 
         if elements:
@@ -64,6 +67,7 @@ def prog():
                 sub_cats = soup.find_all('a', class_='text-[14px] font-[400] text-gray hover:text-blue-primary')
                 break
             except Exception:
+                traceback.print_exc()
                 time.sleep(0.5)
 
         for sub_cat_item in sub_cats:
