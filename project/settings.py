@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv('../.env')
+load_dotenv('../.env', override=True)
 
 TEST = bool(os.environ.get("TEST"))
 # SECRET KEY
