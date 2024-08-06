@@ -2,15 +2,15 @@
 # from pcmarket.category import parse_category
 # from pcmarket.product import parse_product
 
-from mediapark.category import prog as mediapark_category
-from mediapark.product import prog as mediapark_product
+from olcha.category import prog as olcha_category
+from olcha.product import prog as olcha_product
 
 from services import get_all_categories
 
 
 if __name__ == '__main__':
-    mediapark_category()
+    # olcha_category()
 
-    data = [category.url for category in get_all_categories(website="mediapark")]
+    data = [category.url for category in get_all_categories(website="olcha")]
 
-    # mediapark_product(data)
+    olcha_product(data)

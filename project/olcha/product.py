@@ -36,4 +36,5 @@ def prog(links):
                 'website_link': str(item_url)
             }
             print(product_name, img)
-            requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)
+            # requests.post('https://api.taqqoz.uz/v1/product/price/create/', data=obj)
+            requests.post('http://localhost:8000/v1/product/price/create/', data=obj)
